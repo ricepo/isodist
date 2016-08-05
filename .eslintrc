@@ -1,0 +1,7 @@
+{
+  "extends": "ricepo-base",
+  "parser": "babel-eslint",
+  "env": {
+    "node": true
+  }
+}

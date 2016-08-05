@@ -1,0 +1,45 @@
+# Logs
+logs
+*.log
+_*
+
+# Runtime data
+pids
+*.pid
+*.seed
+
+# Coverage directory used by tools like istanbul
+coverage
+.nyc_output
+
+# Compiled binary addons (http://nodejs.org/api/addons.html)
+build/Release
+
+# Dependency directory
+node_modules
+
+# Users Environment Variables
+.lock-wscript
+
+# OS X Junk
+.DS_Store
+*~
+
+# Build output
+lib
+app
+build
+
+# Node Foreman environment variables
+.envrc
+.env
+
+# Vagrant machine files
+.vagrant
+
+# Certificates
+*.pem
+*.key
+
+# Paw file, stage manually when needed
+*.paw
