@@ -11,9 +11,7 @@ const log          = require('./util/log');
 const round        = require('./util/round');
 
 
-function hexf(feature, origin, options) {
-  const z = feature.properties.z;
-
+function hexf(collection, options) {
 
   /**
    * Default options
@@ -24,9 +22,29 @@ function hexf(feature, origin, options) {
 
 
   /**
+   * Fit each feature onto hex grid
+   */
+  const features = collection.features
+    .map(i => _single(i, options));
+
+
+  /**
+   * Wrap into feature collection and return
+   */
+  return Turf.featureCollection(features);
+}
+module.exports = hexf;
+
+
+
+function _single(feature, options) {
+  const z = feature.properties.z;
+
+
+  /**
    * Generate the appropriate bounding box and hex-grid
    */
-  const box = bbox(origin, z * 1.2);
+  const box = Turf.bbox(Turf.featureCollection([feature]));
   const grid = Turf.hexGrid(box, options.cellSize, 'miles');
   const total = grid.features.length;
 
@@ -50,4 +68,3 @@ function hexf(feature, origin, options) {
 
   return polygon;
 }
-module.exports = hexf;

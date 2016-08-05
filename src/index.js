@@ -13,12 +13,14 @@ const OSRM         = require('osrm');
 const Turf         = require('turf');
 const Bluebird     = require('bluebird');
 
-const Line2poly    = require('turf-line-to-polygon');
+
 
 
 const bbox         = require('./bbox');
 const cdist        = require('./cdist');
 const hexf         = require('./hexf');
+const isoln       = require('./isoln');
+const log          = require('./util/log');
 
 
 const osrm = new OSRM('osrm/in.osrm');
@@ -32,11 +34,6 @@ const origin = {
 };
 
 const thresholds = [ 1, 5, 9 ];
-
-
-function log(data) {
-  process.stdout.write(_.padEnd(`\r${data}`, process.stdout.columns));
-}
 
 
 (async function() {
@@ -53,26 +50,20 @@ function log(data) {
   /**
    * Compute distances
    */
-  const pgrid = await cdist(osrm, origin, Turf.pointGrid(box, 0.2, 'miles'));
+  const pgrid = await cdist(osrm, origin, Turf.pointGrid(box, 0.1, 'miles'));
 
 
   /**
    * Generate isolines and convert them to polygons
    */
-  log('Computing isolines, this may take a while...');
-  const isolines = Turf.isolines(pgrid, 'z', 25, thresholds);
-
-  log('Fitting to hex grid...');
-  isolines.features = isolines
-    .features
-    .map(Line2poly)
-    .map(i => hexf(i, origin));
+  const isolines = isoln(pgrid, thresholds);
+  const hexfit = hexf(isolines);
 
 
   log('Writing result to file...');
-  await FS.writeFileAsync('result.json', JSON.stringify(isolines, null, 2), 'utf8');
+  await FS.writeFileAsync('result.json', JSON.stringify(hexfit, null, 2), 'utf8');
 
   log('Success!');
 
 
-}());
+}()).catch(err => console.error(err.stack));
