@@ -43,3 +43,6 @@ build
 
 # Paw file, stage manually when needed
 *.paw
+
+# OSRM files
+osrm/
