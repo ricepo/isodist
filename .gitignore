@@ -45,4 +45,5 @@ build
 *.paw
 
 # OSRM files
+.osrm
 osrm/
