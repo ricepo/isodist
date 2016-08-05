@@ -1,40 +1,82 @@
 {
   "name": "isodistance",
-  "version": "0.0.1",
   "description": "",
+  "version": "1.0.0",
+  "homepage": "https://github.com/ricepo/isodistance",
+  "author": {
+    "name": "Denis Luchkin-Zhou",
+    "email": "denis@ricepo.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ricepo/isodistance.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ricepo/isodistance/issues"
+  },
+  "files": [
+    "lib"
+  ],
+  "license": "MIT",
   "main": "lib/index.js",
-  "directories": {
-    "test": "test"
+  "engines": {
+    "node": ">=4.1.0",
+    "npm": ">=2.14.0"
+  },
+  "scripts": {
+    "install": "./script/setup.sh",
+    "postinstall": "./node_modules/.bin/gulp rebuild"
+  },
+  "devDependencies": {
+    "ava": "^0.15.2",
+    "babel-core": "^6.11.4",
+    "babel-eslint": "^6.1.2",
+    "babel-preset-es2015-node4": "^2.1.0",
+    "babel-preset-stage-3": "^6.11.0",
+    "babel-register": "^6.11.6",
+    "del": "^2.2.1",
+    "eslint": "^3.1.1",
+    "eslint-config-ricepo-base": "^1.0.2",
+    "eslint-plugin-import": "^1.12.0",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-changed": "^1.3.1",
+    "gulp-eslint": "^3.0.1",
+    "gulp-notify": "^2.2.0",
+    "gulp-sourcemaps": "^1.6.0",
+    "is-ci": "^1.0.9",
+    "nyc": "^7.1.0"
   },
   "dependencies": {
     "bluebird": "^3.4.1",
     "geopoint": "^1.0.1",
     "lodash": "^4.14.1",
-    "mapbox": "^1.0.0-beta3",
-    "mapshaper": "^0.3.30",
-    "ora": "^0.3.0",
     "osrm": "^5.3.1",
-    "rx": "^4.1.0",
     "turf": "^3.0.14",
-    "turf-concave": "^1.1.3",
-    "turf-dissolve": "^0.1.0",
     "turf-line-to-polygon": "^0.2.1",
-    "turf-merge": "^1.0.2",
     "yargs": "^4.8.1"
   },
-  "devDependencies": {},
-  "scripts": {
-    "setup": "./script/setup.sh",
-    "prepare": "./script/prepare.sh"
+  "keywords": [],
+  "ava": {
+    "files": [
+      "test/**/*.spec.js"
+    ],
+    "require": [
+      "babel-register"
+    ],
+    "babel": "inherit"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jluchiji/isodistance.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/jluchiji/isodistance/issues"
-  },
-  "homepage": "https://github.com/jluchiji/isodistance#readme"
+  "nyc": {
+    "all": true,
+    "include": [
+      "src/**/*.js"
+    ],
+    "require": [
+      "babel-register"
+    ],
+    "reporter": [
+      "html",
+      "lcov"
+    ]
+  }
 }

@@ -19,6 +19,11 @@ fi
 for f in *.osm; do
   base=$(basename "$f" .osm)
 
+  if [ -f "$base.osrm" ]; then
+    echo "$base.osrm already exists, skipping..."
+    continue
+  fi
+
   ../.osrm/bin/osrm-extract "$base.osm"
   ../.osrm/bin/osrm-contract "$base.osrm"
 

@@ -6,6 +6,16 @@
 destination=".osrm"
 release="5.3"
 
+
+#
+# Skip if already installed
+#
+if [ -d "$destination" ]; then
+  echo "OSRM already installed, skipping"
+  exit 0
+fi
+
+
 #
 # Install build dependencies
 #
@@ -28,3 +38,13 @@ cd bin
 #
 cmake .. -DCMAKE_BUILD_TYPE=Release
 cmake --build .
+
+
+#
+# Print out further instructions
+#
+echo "-------------------------------------------------------------------------------"
+echo "Please complete following steps to setup isodistance:"
+echo " - Visit http://download.geofabrik.de to download OSM files"
+echo " - Place .osm files into osrm directory in package directory"
+echo " - $ npm run prepare"

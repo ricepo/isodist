@@ -6,7 +6,6 @@
  */
 const _            = require('lodash');
 const Turf         = require('turf');
-const bbox         = require('./bbox');
 const log          = require('./util/log');
 const round        = require('./util/round');
 
