@@ -19,14 +19,15 @@ const hexf         = require('./hexf');
 const isoln        = require('./isoln');
 const log          = require('./util/log');
 
-
-const osrm = new OSRM('osrm/in.osrm');
-Bluebird.promisifyAll(osrm);
-
-
-
 async function isodist(origin, stops, options) {
   process.stdout.write('Loading...');
+
+
+  /**
+   * Create OSRM router instance
+   */
+  const osrm = new OSRM(`osrm/${options.osrm}.osrm`);
+  Bluebird.promisifyAll(osrm);
 
 
   /**

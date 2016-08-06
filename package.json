@@ -1,18 +1,21 @@
 {
-  "name": "isodistance",
+  "name": "isodist",
   "description": "",
   "version": "1.0.0",
-  "homepage": "https://github.com/ricepo/isodistance",
+  "homepage": "https://github.com/ricepo/isodist",
   "author": {
     "name": "Denis Luchkin-Zhou",
     "email": "denis@ricepo.com"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/ricepo/isodistance.git"
+    "url": "git://github.com/ricepo/isodist.git"
   },
   "bugs": {
-    "url": "https://github.com/ricepo/isodistance/issues"
+    "url": "https://github.com/ricepo/isodist/issues"
+  },
+  "bin": {
+    "isodist": "bin/isodist.js"
   },
   "files": [
     "lib"

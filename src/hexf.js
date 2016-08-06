@@ -21,6 +21,14 @@ function hexf(collection, options) {
 
 
   /**
+   * Skip if cellsize is 0
+   */
+  if (options.cellSize <= 0) {
+    return collection;
+  }
+
+
+  /**
    * Fit each feature onto hex grid
    */
   const features = collection.features

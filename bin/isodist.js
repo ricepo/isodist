@@ -15,9 +15,10 @@ const IsoDist      = require('..');
  */
 const argv = Yargs
 
-  .demand([ 'lat', 'lon', 'stops' ])
+  .demand([ 'lat', 'lon', 'stops', 'osrm' ])
 
   .describe('stops', 'Distances where to compute isodistance polygons')
+  .describe('osrm', 'OSRM file to use for routing')
 
   .alias('o', 'output')
   .default('o', 'output.json')
