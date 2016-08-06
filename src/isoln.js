@@ -32,6 +32,7 @@ function isoln(pgrid, stops, options) {
    */
   let wrapped = _
     .chain(isolines.features)
+    .filter(i => i.geometry.coordinates.length >= 4)
     .map(LineToPoly);
 
 
