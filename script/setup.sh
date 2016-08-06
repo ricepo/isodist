@@ -26,7 +26,7 @@ brew install boost git cmake libzip libstxxl libxml2 lua51 luajit luabind tbb
 # Clone the OSRM repo
 # IMPORTANT: We MUST checkout 5.3 tag or otherwise routing will fail down the road
 #
-git clone git@github.com:Project-OSRM/osrm-backend "$destination"
+git clone https://github.com/Project-OSRM/osrm-backend.git "$destination"
 cd "$destination"
 git checkout "$release"
 mkdir -p bin

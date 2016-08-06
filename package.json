@@ -28,6 +28,7 @@
   },
   "scripts": {
     "install": "./script/setup.sh",
+    "prepare": "./script/prepare.sh",
     "postinstall": "./node_modules/.bin/gulp rebuild"
   },
   "devDependencies": {
