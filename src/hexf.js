@@ -48,7 +48,6 @@ module.exports = hexf;
 
 
 function _single(feature, options) {
-  log.nl();
   const d = feature.properties.distance;
 
 
@@ -77,6 +76,6 @@ function _single(feature, options) {
     .assign({ properties: feature.properties })
     .value();
 
-
+  log.success(`Processing d=${d}`);
   return polygon;
 }

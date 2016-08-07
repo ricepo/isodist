@@ -29,7 +29,7 @@ const argv = Yargs
   .default('r', 0.2)
   .describe('r', 'Sampling resolution of point grid')
 
-  .alias('h', 'hexsize')
+  .alias('h', 'hex-size')
   .default('h', 0.5)
   .describe('h', 'Size of hex grid cells')
 
@@ -70,8 +70,8 @@ StdIn()
     /**
      * Generate steps
      */
-    if (argv.steps) {
-      options.steps = argv.steps;
+    if (argv.step) {
+      options.steps = [].concat(argv.step);
     }
     if (!options.steps || !options.steps.length) {
       console.error(`${Chalk.bold.red('FATAL')} Could not determine isodistance steps`);
@@ -108,6 +108,7 @@ StdIn()
   .then(fc => {
     const output = JSON.stringify(fc, null, 2);
     process.stdout.write(output);
+    process.exit(0);
   })
   .catch(err => {
     console.error(err.stack);

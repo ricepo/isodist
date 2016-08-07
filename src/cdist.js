@@ -20,7 +20,6 @@ const log          = require('./util/log');
  * @return {Object}       pgrid with distance metrics assigned
  */
 async function cdist(osrm, origin, pgrid, options) {
-  log.nl();
 
 
   /**
@@ -62,6 +61,7 @@ async function cdist(osrm, origin, pgrid, options) {
     await Bluebird.all(chunks[i].map(_single));
     log(`Computing distances: ${(i / chunks.length * 100).toFixed(2)}%`);
   }
+  log.success('Computing distances');
 
 
   return pgrid;

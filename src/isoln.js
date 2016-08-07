@@ -10,7 +10,6 @@ const Turf         = require('turf');
 const LineToPoly   = require('turf-line-to-polygon');
 
 function isoln(pgrid, stops, options) {
-  log.nl();
 
 
   /**
@@ -25,7 +24,8 @@ function isoln(pgrid, stops, options) {
    * Generate isolines and reduce them to fitted polygons
    */
   log('Computing isolines, this may take a while...');
-  const isolines = Turf.isolines(pgrid, 'distance', 25, stops);
+  const resolution = Math.round(Math.sqrt(pgrid.features.length));
+  const isolines = Turf.isolines(pgrid, 'distance', resolution, stops);
 
 
   /**
@@ -56,6 +56,7 @@ function isoln(pgrid, stops, options) {
   /**
    * Extract value
    */
+  log.success('Computing isolines');
   return Turf.featureCollection(wrapped.value());
 }
 module.exports = isoln;

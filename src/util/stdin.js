@@ -13,12 +13,14 @@ function stdin() {
       const stream = process.stdin;
       const chunks = [ ];
 
+      if (stream.isTTY) { resolve({ }); }
+
       stream.setEncoding('utf8');
 
       stream.on('data', d => chunks.push(d));
 
       stream.on('end', () => {
-        if (chunks.length === 0) { resolve(null); }
+        if (chunks.length === 0) { resolve({ }); }
         const input = chunks.join('');
         resolve(JSON.parse(input));
       });

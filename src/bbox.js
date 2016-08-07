@@ -6,6 +6,7 @@
  */
 const Turf         = require('turf');
 const GeoPoint     = require('geopoint');
+const log          = require('./util/log');
 
 
 
@@ -16,6 +17,7 @@ const GeoPoint     = require('geopoint');
  * @return {Number[]}           Turf.js bounding box
  */
 function bbox(center, radius) {
+  log('Computing bounding box...');
 
 
   /**
@@ -35,6 +37,7 @@ function bbox(center, radius) {
   /**
    * Generate the actual bounding box
    */
+  log.success('Computing bounding box');
   return Turf.bbox(fc);
 }
 module.exports = bbox;

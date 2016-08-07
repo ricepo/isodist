@@ -18,6 +18,7 @@ function log(data) {
 module.exports = log;
 
 
-log.nl = function() {
-
+log.success = function(data) {
+  write(`${chalk.bold.green(' OK ')} ${data}`);
+  console.error('');
 };
