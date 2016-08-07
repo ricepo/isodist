@@ -45,7 +45,9 @@ build
 *.paw
 
 # OSRM files
-.osrm
+.osrm/
 osrm/
+!osrm/*.md
 
-result.json
+*.json
+!package.json
