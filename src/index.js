@@ -61,8 +61,8 @@ async function isodist(origin, stops, options) {
     .sortBy(i => -i.properties.distance)
     .forEach(i => {
       const data = options.data[i.properties.distance];
-      if (!data && options.hadData) {
-        console.error(`[WARN] No data found for d=${i.properties.distance}`);
+      if (!data) {
+        log.warn(`No data found for d=${i.properties.distance}`);
       }
       _.assign(i.properties, data);
     })
