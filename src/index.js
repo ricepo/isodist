@@ -20,13 +20,13 @@ const isoln        = require('./isoln');
 const log          = require('./util/log');
 
 async function isodist(origin, stops, options) {
-  process.stdout.write('Loading...');
+  log('Loading...');
 
 
   /**
    * Create OSRM router instance
    */
-  const osrm = new OSRM(`osrm/${options.osrm}.osrm`);
+  const osrm = new OSRM(`osrm/${options.map}.osrm`);
   Bluebird.promisifyAll(osrm);
 
 
@@ -47,9 +47,32 @@ async function isodist(origin, stops, options) {
    */
   const isolines = isoln(pgrid, stops, { deburr: options.deburr });
   const hexfit = hexf(isolines, { cellSize: options.hexsize });
+
+
+  /**
+   * Post-processing
+   *  - Sort by reverse distance
+   *  - Attach additional data to the feature properties
+   */
+  log.nl();
+  log('Post-processing...');
+  const post = _
+    .chain(hexfit.features)
+    .sortBy(i => -i.properties.distance)
+    .forEach(i => {
+      const data = options.data[i.properties.distance];
+      if (!data && options.hadData) {
+        console.error(`[WARN] No data found for d=${i.properties.distance}`);
+      }
+      _.assign(i.properties, data);
+    })
+    .value();
+
+
+  log.nl();
   log('Success!');
 
 
-  return hexfit;
+  return Turf.featureCollection(post);
 }
 module.exports = isodist;

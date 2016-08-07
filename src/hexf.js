@@ -48,6 +48,7 @@ module.exports = hexf;
 
 
 function _single(feature, options) {
+  log.nl();
   const d = feature.properties.distance;
 
 
@@ -73,6 +74,7 @@ function _single(feature, options) {
       log(`Merging d=${d}: ${(i / total * 100).toFixed(2)}%`);
       return Turf.union(mem, cell);
     })
+    .assign({ properties: feature.properties })
     .value();
 
 

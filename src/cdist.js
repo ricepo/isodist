@@ -20,6 +20,7 @@ const log          = require('./util/log');
  * @return {Object}       pgrid with distance metrics assigned
  */
 async function cdist(osrm, origin, pgrid, options) {
+  log.nl();
 
 
   /**

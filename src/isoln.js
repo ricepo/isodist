@@ -10,6 +10,7 @@ const Turf         = require('turf');
 const LineToPoly   = require('turf-line-to-polygon');
 
 function isoln(pgrid, stops, options) {
+  log.nl();
 
 
   /**
@@ -39,7 +40,7 @@ function isoln(pgrid, stops, options) {
   /**
    * Add deburr step if needed
    */
-  if (options.deburr) {
+  if (!options.noDeburr) {
 
     wrapped = wrapped
       .groupBy('properties.distance')
