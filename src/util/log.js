@@ -13,7 +13,7 @@ const chalk        = new Chalk.constructor({ enabled: true });
 
 
 function log(data) {
-  write(`${chalk.bold.yellow(' .. ')} ${data}`);
+  write(`${chalk.bold.cyan(' .. ')} ${data}`);
 }
 module.exports = log;
 
@@ -25,6 +25,15 @@ log.success = function(data) {
 
 
 log.warn = function(data) {
-  write(`${chalk.bold.red('WARN')} ${data}`);
+  write(`${chalk.bold.yellow('WARN')} ${data}`);
   console.error('');
+};
+
+
+log.fail = function(data) {
+  write(`${chalk.bold.red('FAIL')} ${data}`);
+  console.error('');
+  const err = new Error(data);
+  err.known = true;
+  throw err;
 };

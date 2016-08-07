@@ -19,6 +19,21 @@ const hexf         = require('./hexf');
 const isoln        = require('./isoln');
 const log          = require('./util/log');
 
+
+/**
+ * Kink coefficient
+ * Resolution is multiplied when kinks are detected
+ */
+const KINK_COEFF = 2.0;
+
+
+/**
+ * Maximum number of retries before failing
+ */
+const MAX_RETRIES = 10;
+
+
+
 async function isodist(origin, stops, options) {
   log('Loading OSRM...');
 
@@ -38,15 +53,41 @@ async function isodist(origin, stops, options) {
 
 
   /**
-   * Compute distances
+   * Retry on kink
    */
-  const pgrid = await cdist(osrm, origin, Turf.pointGrid(box, options.resolution, 'miles'));
+  let resolution = options.resolution;
+  let isolines = null;
+  let retries = 0;
+
+  while (!isolines) {
+    if (retries > MAX_RETRIES) {
+      log.fail('Could not eliminate kinks in isoline polygons');
+    }
+
+    /**
+     * Compute distances
+     */
+    const pgrid = await cdist(osrm, origin, Turf.pointGrid(box, resolution, 'miles'));
+
+
+    /**
+     * Generate isolines and convert them to polygons
+     */
+    try {
+      isolines = isoln(pgrid, stops, { deburr: options.deburr });
+    } catch (x) {
+      if (!x.known) { throw x; }
+      resolution *= 2;
+      log.warn(`increased resolution to ${resolution} due to polygon kinks`);
+    }
+
+    retries++;
+  }
 
 
   /**
-   * Generate isolines and convert them to polygons
+   * Fit isolines onto hex grid
    */
-  const isolines = isoln(pgrid, stops, { deburr: options.deburr });
   const hexfit = hexf(isolines, { cellSize: options.hexSize });
 
 

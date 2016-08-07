@@ -26,15 +26,23 @@ function isoln(pgrid, stops, options) {
   log('Computing isolines, this may take a while...');
   const resolution = Math.round(Math.sqrt(pgrid.features.length));
   const isolines = Turf.isolines(pgrid, 'distance', resolution, stops);
+  log.success('Computing isolines');
 
 
   /**
    * Begin mapping
    */
+  log('Optimizing isolines...');
   let wrapped = _
     .chain(isolines.features)
     .filter(i => i.geometry.coordinates.length >= 4)
-    .map(LineToPoly);
+    .map(LineToPoly)
+    .forEach(i => {
+      const kinks = Turf.kinks(i);
+      if (kinks.features.length > 0) {
+        log.fail(`Kinks detected for d=${i.properties.distance}`);
+      }
+    });
 
 
   /**
@@ -56,7 +64,7 @@ function isoln(pgrid, stops, options) {
   /**
    * Extract value
    */
-  log.success('Computing isolines');
+  log.success('Optimizing isolines');
   return Turf.featureCollection(wrapped.value());
 }
 module.exports = isoln;

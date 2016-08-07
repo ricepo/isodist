@@ -11,6 +11,7 @@ const _            = require('lodash');
 const Chalk        = require('chalk');
 const Yargs        = require('yargs');
 const IsoDist      = require('..');
+const log          = require('../lib/util/log');
 const StdIn        = require('../lib/util/stdin');
 
 
@@ -56,8 +57,7 @@ StdIn()
      * Generate the origin point if not specified
      */
     if (!options.origin && (!_.isFinite(argv.lat) || !_.isFinite(argv.lon))) {
-      console.error(`${Chalk.bold.red('FATAL')} Could not determine origin location`);
-      process.exit(1);
+      log.fail('Could not determine origin location');
     }
     if (argv.lat && argv.lon) {
       options.origin = {
@@ -74,8 +74,7 @@ StdIn()
       options.steps = [].concat(argv.step);
     }
     if (!options.steps || !options.steps.length) {
-      console.error(`${Chalk.bold.red('FATAL')} Could not determine isodistance steps`);
-      process.exit(1);
+      log.fail('Could not determine isodistance steps');
     }
 
 
@@ -94,8 +93,7 @@ StdIn()
      * We really need that map though
      */
     if (!options.map) {
-      console.error(`${Chalk.bold.red('FATAL')} Missing OSRM map path`);
-      process.exit(1);
+      log.fail('Missing OSRM map path');
     }
 
 
@@ -111,5 +109,6 @@ StdIn()
     process.exit(0);
   })
   .catch(err => {
-    console.error(err.stack);
+    if (!err.known) { console.error(err.stack); }
+    process.exit(1);
   });
