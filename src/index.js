@@ -74,7 +74,7 @@ async function isodist(origin, stops, options) {
      * Generate isolines and convert them to polygons
      */
     try {
-      isolines = isoln(pgrid, stops, { deburr: options.deburr });
+      isolines = isoln(pgrid, stops, options);
     } catch (x) {
       if (!x.known) { throw x; }
       resolution *= 2;
@@ -88,7 +88,7 @@ async function isodist(origin, stops, options) {
   /**
    * Fit isolines onto hex grid
    */
-  const hexfit = hexf(isolines, { cellSize: options.hexSize });
+  const hexfit = hexf(isolines, options);
 
 
   /**

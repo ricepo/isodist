@@ -13,19 +13,10 @@ function isoln(pgrid, stops, options) {
 
 
   /**
-   * Default options
-   */
-  options = _.defaults(options, {
-    deburr: true
-  });
-
-
-  /**
    * Generate isolines and reduce them to fitted polygons
    */
   log('Computing isolines, this may take a while...');
-  const resolution = Math.round(Math.sqrt(pgrid.features.length));
-  const isolines = Turf.isolines(pgrid, 'distance', resolution, stops);
+  const isolines = Turf.isolines(pgrid, 'distance', 25, stops);
   log.success('Computing isolines');
 
 
@@ -40,7 +31,11 @@ function isoln(pgrid, stops, options) {
     .forEach(i => {
       const kinks = Turf.kinks(i);
       if (kinks.features.length > 0) {
-        log.fail(`Kinks detected for d=${i.properties.distance}`);
+        if (options.hexSize > 0) {
+          log.fail(`Kinks detected for d=${i.properties.distance}`);
+        } else {
+          log.warn(`Kinks detected for d=${i.properties.distance}`);
+        }
       }
     });
 

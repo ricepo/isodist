@@ -12,18 +12,11 @@ const round        = require('./util/round');
 
 function hexf(collection, options) {
 
-  /**
-   * Default options
-   */
-  options = _.defaults(options, {
-    cellSize: 0.5
-  });
-
 
   /**
    * Skip if cellsize is 0
    */
-  if (options.cellSize <= 0) {
+  if (options.hexSize <= 0) {
     return collection;
   }
 
@@ -55,7 +48,7 @@ function _single(feature, options) {
    * Generate the appropriate bounding box and hex-grid
    */
   const box = Turf.bbox(Turf.featureCollection([feature]));
-  const grid = Turf.hexGrid(box, options.cellSize, 'miles');
+  const grid = Turf.hexGrid(box, options.hexSize, 'miles');
   const total = grid.features.length;
 
 

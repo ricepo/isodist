@@ -8,7 +8,6 @@
 /* eslint strict: 0, no-process-exit: 0 */
 'use strict';
 const _            = require('lodash');
-const Chalk        = require('chalk');
 const Yargs        = require('yargs');
 const IsoDist      = require('..');
 const log          = require('../lib/util/log');
@@ -84,7 +83,7 @@ StdIn()
     _.defaults(options, {
       resolution: argv.r,
       noDeburr: argv.noDeburr,
-      hexsize: argv.h,
+      hexSize: argv.h,
       map: argv.m
     });
 
