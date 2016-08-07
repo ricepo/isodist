@@ -90,6 +90,8 @@ results but much faster processing. Smaller values will produce more precise res
 require exponentially more processing time and memory.
 
 Having a very small resolution value may result in kinks (i.e. self-intersections) of isodistance
+polygons, which cause hex-fitting to fail. You can choose to ignore them by disabling hex-fitting,
+but note that presence of kinks usually indicates incorrect parameter choice.
 
 
 ### `-h, --hex-size`
