@@ -31,8 +31,11 @@ function hexf(collection, options) {
   /**
    * Fit each feature onto hex grid
    */
-  const features = collection.features
-    .map(i => _single(i, options));
+  const features = _
+    .chain(collection.features)
+    .map(i => _single(i, options))
+    .compact()
+    .value();
 
 
   /**
@@ -45,7 +48,7 @@ module.exports = hexf;
 
 
 function _single(feature, options) {
-  const z = feature.properties.z;
+  const d = feature.properties.distance;
 
 
   /**
@@ -62,12 +65,12 @@ function _single(feature, options) {
   const polygon = _
     .chain(grid.features)
     .filter((cell, i) => {
-      log(`Fitting z=${z}: ${(i / total * 100).toFixed(2)}%`);
+      log(`Fitting d=${d}: ${(i / total * 100).toFixed(2)}%`);
       return Turf.intersect(cell, feature);
     })
     .map(round)
     .reduce((mem, cell, i) => {
-      log(`Merging z=${z}: ${(i / total * 100).toFixed(2)}%`);
+      log(`Merging d=${d}: ${(i / total * 100).toFixed(2)}%`);
       return Turf.union(mem, cell);
     })
     .value();

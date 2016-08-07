@@ -48,7 +48,7 @@ async function cdist(osrm, origin, pgrid, options) {
       ]
     });
 
-    feature.properties.z = result.routes.length > 0
+    feature.properties.distance = result.routes.length > 0
       ? result.routes[0].distance * 0.000621371
       : Number.MAX_VALUE;
   }

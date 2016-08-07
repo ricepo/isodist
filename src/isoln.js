@@ -24,7 +24,7 @@ function isoln(pgrid, stops, options) {
    * Generate isolines and reduce them to fitted polygons
    */
   log('Computing isolines, this may take a while...');
-  const isolines = Turf.isolines(pgrid, 'z', 25, stops);
+  const isolines = Turf.isolines(pgrid, 'distance', 25, stops);
 
 
   /**
@@ -42,7 +42,7 @@ function isoln(pgrid, stops, options) {
   if (options.deburr) {
 
     wrapped = wrapped
-      .groupBy('properties.z')
+      .groupBy('properties.distance')
       .map(
         i => (i.length === 1
           ? i[0]
