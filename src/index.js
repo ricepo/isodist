@@ -40,7 +40,7 @@ async function isodist(origin, stops, options) {
   /**
    * Create OSRM router instance
    */
-  const osrm = new OSRM(`osrm/${options.map}.osrm`);
+  const osrm = new OSRM(options.map);
   Bluebird.promisifyAll(osrm);
   log.success('Loading OSRM');
 

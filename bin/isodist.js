@@ -8,6 +8,7 @@
 /* eslint strict: 0, no-process-exit: 0 */
 'use strict';
 const _            = require('lodash');
+const Path         = require('path');
 const Yargs        = require('yargs');
 const IsoDist      = require('..');
 const log          = require('../lib/util/log');
@@ -44,6 +45,7 @@ const argv = Yargs
  */
 StdIn()
   .then(options => {
+
 
     /**
      * Generate separate steps and data entries
@@ -86,6 +88,12 @@ StdIn()
       hexSize: argv.h,
       map: argv.m
     });
+
+
+    /**
+     * Resolve the options path
+     */
+    options.map = Path.resolve(__dirname, `../osrm/${options.map}.osrm`);
 
 
     /**
