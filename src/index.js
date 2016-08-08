@@ -15,9 +15,8 @@ const Bluebird     = require('bluebird');
 
 const bbox         = require('./bbox');
 const cdist        = require('./cdist');
-const hexf         = require('./hexf');
-const isoln        = require('./isoln');
 const log          = require('./util/log');
+const trace        = require('./trace');
 
 
 /**
@@ -55,7 +54,6 @@ async function isodist(origin, stops, options) {
   /**
    * Retry on kink
    */
-  let resolution = options.resolution;
   let isolines = null;
   let retries = 0;
 
@@ -67,28 +65,22 @@ async function isodist(origin, stops, options) {
     /**
      * Compute distances
      */
-    const pgrid = await cdist(osrm, origin, Turf.pointGrid(box, resolution, 'miles'));
+    const pgrid = await cdist(osrm, origin, Turf.pointGrid(box, options.resolution, 'miles'));
 
 
     /**
      * Generate isolines and convert them to polygons
      */
     try {
-      isolines = isoln(pgrid, stops, options);
+      isolines = stops.map(i => trace(pgrid, i, options));
     } catch (x) {
       if (!x.known) { throw x; }
-      resolution *= 2;
-      log.warn(`increased resolution to ${resolution} due to polygon kinks`);
+      options.resolution *= 2;
+      log.warn(`increased resolution to ${options.resolution} due to polygon kinks`);
     }
 
     retries++;
   }
-
-
-  /**
-   * Fit isolines onto hex grid
-   */
-  const hexfit = hexf(isolines, options);
 
 
   /**
@@ -98,7 +90,7 @@ async function isodist(origin, stops, options) {
    */
   log('Post-processing...');
   const post = _
-    .chain(hexfit.features)
+    .chain(isolines)
     .sortBy(i => -i.properties.distance)
     .forEach(i => {
       const data = options.data[i.properties.distance];
@@ -109,6 +101,13 @@ async function isodist(origin, stops, options) {
     })
     .value();
 
+
+  /**
+   * Sanity-check the result
+   */
+  if (post.length !== stops.length) {
+    log.fail(`Expected ${stops.length} polygons but produced ${post.length}`);
+  }
 
   log.success('Complete');
 
