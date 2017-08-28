@@ -29,7 +29,8 @@
   "scripts": {
     "install": "./script/setup.sh",
     "prepare": "./script/prepare.sh",
-    "postinstall": "./node_modules/.bin/gulp rebuild"
+    "postinstall": "./node_modules/.bin/gulp rebuild",
+    "start": "node server"
   },
   "devDependencies": {
     "ava": "^0.15.2",
