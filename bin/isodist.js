@@ -46,7 +46,6 @@ const argv = Yargs
 StdIn()
   .then(options => {
 
-
     /**
      * Generate separate steps and data entries
      */

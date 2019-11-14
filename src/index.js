@@ -8,11 +8,7 @@
  */
 /* eslint no-loop-func: 1 */
 const _            = require('lodash');
-const OSRM         = require('osrm');
 const Turf         = require('turf');
-const Bluebird     = require('bluebird');
-
-
 const bbox         = require('./bbox');
 const cdist        = require('./cdist');
 const log          = require('./util/log');
@@ -34,16 +30,6 @@ const MAX_RETRIES = 10;
 
 
 async function isodist(origin, stops, options) {
-  log('Loading OSRM...');
-
-
-  /**
-   * Create OSRM router instance
-   */
-  const osrm = new OSRM(options.map);
-  Bluebird.promisifyAll(osrm);
-  log.success('Loading OSRM');
-
 
   /**
    * Determine the bounding box and generate point grid
@@ -65,7 +51,8 @@ async function isodist(origin, stops, options) {
     /**
      * Compute distances
      */
-    const pgrid = await cdist(osrm, origin, Turf.pointGrid(box, options.resolution, 'miles'));
+    const pgrid = await cdist(options.map,
+       origin, Turf.pointGrid(box, options.resolution, 'miles'));
 
 
     /**

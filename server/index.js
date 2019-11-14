@@ -7,30 +7,32 @@
  */
 /* eslint strict: 0, no-process-exit: 0 */
 'use strict';
-var _            = require('lodash');
-var Path         = require('path');
-var IsoDist      = require('..');
-var Express      = require('express');
-var BodyParser   = require('body-parser');
-var Cors         = require('cors');
-var app          = Express();
+const _            = require('lodash');
+const Path         = require('path');
+const IsoDist      = require('..');
+const Express      = require('express');
+const BodyParser   = require('body-parser');
+const Cors         = require('cors');
 
-app.use(Cors())
+const app          = Express();
+
+app.use(Cors());
 app.use(BodyParser.json());
-app.use(BodyParser.urlencoded({ extended: true }));
+// app.use(BodyParser.urlencoded({ extended: true }));
 
-app.post('/', function(req, res) {
+app.post('/', (req, res) => {
   run(req.body)
-    .then(function(data) {
+    .then((data) => {
       res.json(_.get(data, 'features[0].geometry'));
     })
-    .catch(function(err) {
+    .catch((err) => {
+      console.log(err);
       res.status(500).send('Something broke!');
-    })
+    });
 });
 
-app.listen(process.env.PORT || 3456, function () {
-  console.log('Isodist server listening on port 3456!')
+app.listen(process.env.PORT || 3456, () => {
+  console.log('Isodist server listening on port 3456!');
 });
 
 
@@ -42,10 +44,9 @@ function run(options) {
 
   _.defaults(options, {
     resolution: 0.1,
-    hexSize: 0.5,
+    hexSize: 0.5
   });
 
-  options.map = Path.resolve(__dirname, `../osrm/${options.map}.osrm`);
 
   return IsoDist(options.origin, options.steps, options);
 
