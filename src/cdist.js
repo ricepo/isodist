@@ -88,6 +88,11 @@ async function cdist(mapName, origin, pgrid, options) {
 }
 
 function firstUpperCase(str) {
+
+  if (str === 'France') {
+
+    return 'IleDeFrance';
+  }
   return str.toLowerCase().replace(/(\s|^)[a-z]/g, (L) => L.toUpperCase().trim());
 }
 
