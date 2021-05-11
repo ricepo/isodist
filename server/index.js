@@ -42,9 +42,12 @@ function run(options) {
   options.data = _.keyBy(options.steps, 'distance');
   options.steps = _.map(options.steps, 'distance');
 
+  /**
+   * The resolution and hexSize should >= [0.03, 0.15]
+   */
   _.defaults(options, {
-    resolution: 0.1,
-    hexSize: 0.5
+    resolution: 0.04,
+    hexSize: 0.2
   });
 
 

@@ -4,7 +4,7 @@
  * @author  Denis Luchkin-Zhou <denis@ricepo.com>
  * @license 2015-16 (C) Ricepo LLC. All Rights Reserved.
  */
-const Turf         = require('turf');
+const Turf         = require('@turf/turf');
 const GeoPoint     = require('geopoint');
 const log          = require('./util/log');
 

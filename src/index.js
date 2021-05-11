@@ -8,7 +8,7 @@
  */
 /* eslint no-loop-func: 1 */
 const _            = require('lodash');
-const Turf         = require('turf');
+const Turf         = require('@turf/turf');
 const bbox         = require('./bbox');
 const cdist        = require('./cdist');
 const log          = require('./util/log');
@@ -52,7 +52,7 @@ async function isodist(origin, stops, options) {
      * Compute distances
      */
     const pgrid = await cdist(options.map,
-       origin, Turf.pointGrid(box, options.resolution, 'miles'));
+       origin, Turf.pointGrid(box, options.resolution, { units: 'miles' }));
 
 
     /**

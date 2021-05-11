@@ -51,3 +51,5 @@ osrm/
 
 *.json
 !package.json
+
+debug

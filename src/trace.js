@@ -7,7 +7,7 @@
 const _            = require('lodash');
 const log          = require('./util/log');
 const round        = require('./util/round');
-const Turf         = require('turf');
+const Turf         = require('@turf/turf');
 
 
 
@@ -32,7 +32,7 @@ function trace(pgrid, d, opts) {
   const delta = opts.hexSize > 0
     ? opts.hexSize
     : 0.5;
-  const hull = Turf.concave(filtered, delta, 'miles');
+  const hull = Turf.concave(filtered, { maxEdge: delta, units: 'miles' });
   hull.properties.distance = d;
 
 
@@ -49,7 +49,7 @@ function trace(pgrid, d, opts) {
    * Generate the appropriate bounding box and hex-grid
    */
   const box = Turf.bbox(Turf.featureCollection([hull]));
-  const grid = Turf.hexGrid(box, opts.hexSize, 'miles');
+  const grid = Turf.hexGrid(box, opts.hexSize, { units: 'miles' });
   const total = grid.features.length;
 
 
@@ -59,8 +59,23 @@ function trace(pgrid, d, opts) {
   const polygon = _
     .chain(grid.features)
     .filter((cell, i) => {
+
+      /* First judge if hex grid is intersect with hull */
+      if (!Turf.booleanIntersects(cell, hull)) { return false; }
+
+      /* If intersect, judge if intersect points rate greater than 0.5 */
+      const flattenCoords = _.flatten(cell.geometry.coordinates);
+      const inPoly = _.chain(flattenCoords).map((coord) =>
+      Turf.booleanPointInPolygon(Turf.point(coord), hull))
+      .filter((item) => item)
+      .value();
+
       log(`Fitting d=${d}: ${(i / total * 100).toFixed(2)}%`);
-      return Turf.intersect(cell, hull);
+
+      /* Only intersect hex grid and intersect rate over 50% will pass */
+      return (inPoly.length / flattenCoords.length) >= 0.5;
+
+      // return Turf.booleanIntersects(cell, hull);
     })
     .map(round)
     .reduce((mem, cell, i) => {
