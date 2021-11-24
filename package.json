@@ -61,7 +61,6 @@
     "express": "^4.15.2",
     "geopoint": "^1.0.1",
     "lodash": "^4.14.1",
-    "osrm": "^5.3.1",
     "request": "^2.88.0",
     "request-promise": "^4.2.2",
     "request-promise-native": "^1.0.5",
