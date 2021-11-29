@@ -41,7 +41,8 @@ async function cdist(mapName, origin, pgrid, options) {
   /**
    * get map name
    */
-  const map = firstUpperCase(mapName);
+  // const map = firstUpperCase(mapName);
+  const map = mapName;
 
   /**
    *
