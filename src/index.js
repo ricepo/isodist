@@ -11,7 +11,6 @@ const _            = require('lodash');
 const Turf         = require('@turf/turf');
 const bbox         = require('./bbox');
 const cdist        = require('./cdist');
-const log          = require('./util/log');
 const trace        = require('./trace');
 
 
@@ -45,7 +44,7 @@ async function isodist(origin, stops, options) {
 
   while (!isolines) {
     if (retries > MAX_RETRIES) {
-      log.fail('Could not eliminate kinks in isoline polygons');
+      console.log('Could not eliminate kinks in isoline polygons');
     }
 
     /**
@@ -63,7 +62,7 @@ async function isodist(origin, stops, options) {
     } catch (x) {
       if (!x.known) { throw x; }
       options.resolution *= 2;
-      log.warn(`increased resolution to ${options.resolution} due to polygon kinks`);
+      console.log(`increased resolution to ${options.resolution} due to polygon kinks`);
     }
 
     retries++;
@@ -75,14 +74,14 @@ async function isodist(origin, stops, options) {
    *  - Sort by reverse distance
    *  - Attach additional data to the feature properties
    */
-  log('Post-processing...');
+  console.log('Post-processing...');
   const post = _
     .chain(isolines)
     .sortBy(i => -i.properties.distance)
     .forEach(i => {
       const data = options.data[i.properties.distance];
       if (!data) {
-        log.warn(`No data found for d=${i.properties.distance}`);
+        console.log(`No data found for d=${i.properties.distance}`);
       }
       _.assign(i.properties, data);
     })
@@ -93,10 +92,10 @@ async function isodist(origin, stops, options) {
    * Sanity-check the result
    */
   if (post.length !== stops.length) {
-    log.fail(`Expected ${stops.length} polygons but produced ${post.length}`);
+    console.log(`Expected ${stops.length} polygons but produced ${post.length}`);
   }
 
-  log.success('Complete');
+  console.log('Complete');
 
 
   return Turf.featureCollection(post);

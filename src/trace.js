@@ -5,7 +5,6 @@
  * @license 2015-16 (C) Ricepo LLC. All Rights Reserved.
  */
 const _            = require('lodash');
-const log          = require('./util/log');
 const round        = require('./util/round');
 const Turf         = require('@turf/turf');
 
@@ -17,7 +16,7 @@ function trace(pgrid, d, opts) {
   /**
    * Filter out points not within step range
    */
-  log(`Filtering d=${d}...`);
+  console.log(`Filtering d=${d}...`);
   const filtered = Turf.featureCollection(
     pgrid
       .features
@@ -28,7 +27,7 @@ function trace(pgrid, d, opts) {
   /**
    * Compute concave hull
    */
-  log(`Tracing d=${d}...`);
+  console.log(`Tracing d=${d}...`);
   const delta = opts.hexSize > 0
     ? opts.hexSize
     : 0.5;
@@ -40,7 +39,7 @@ function trace(pgrid, d, opts) {
    * Skip hex-fitting if hex-size is 0
    */
   if (opts.hexSize <= 0) {
-    log.success(`Processing d=${d}`);
+    console.log(`Processing d=${d}`);
     return hull;
   }
 
@@ -70,7 +69,7 @@ function trace(pgrid, d, opts) {
       .filter((item) => item)
       .value();
 
-      log(`Fitting d=${d}: ${(i / total * 100).toFixed(2)}%`);
+      console.log(`Fitting d=${d}: ${(i / total * 100).toFixed(2)}%`);
 
       /* Only intersect hex grid and intersect rate over 50% will pass */
       return (inPoly.length / flattenCoords.length) >= 0.5;
@@ -79,14 +78,14 @@ function trace(pgrid, d, opts) {
     })
     .map(round)
     .reduce((mem, cell, i) => {
-      log(`Merging d=${d}: ${(i / total * 100).toFixed(2)}%`);
+      console.log(`Merging d=${d}: ${(i / total * 100).toFixed(2)}%`);
       return Turf.union(mem, cell);
     })
     .assign({ properties: hull.properties })
     .value();
 
 
-  log.success(`Processing d=${d}`);
+  console.log(`Processing d=${d}`);
   return polygon;
 }
 module.exports = trace;

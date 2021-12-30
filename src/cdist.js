@@ -7,7 +7,6 @@
 const _            = require('lodash');
 const polyline     = require('@mapbox/polyline');
 const rp           = require('request-promise');
-const log          = require('./util/log');
 const querystring  = require('querystring');
 
 
@@ -99,9 +98,9 @@ async function cdist(mapName, origin, pgrid, options) {
 
     await Promise.all(chunkArr[i].map(_newSingle));
 
-    log(`Computing distances: ${(i / chunkArr.length * 100).toFixed(2)}%`);
+    console.log(`Computing distances: ${(i / chunkArr.length * 100).toFixed(2)}%`);
   }
-  log.success('Computing distances');
+  console.log('Computing distances');
 
   return pgrid;
 }
