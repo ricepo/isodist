@@ -35,6 +35,8 @@ app.listen(process.env.PORT || 3456, () => {
   console.log('Isodist server listening on port 3456!');
 });
 
+/* Must greater than the idle timeout of AWS ELB to prevent 502 bad gateway */
+app.keepAliveTimeout = 6 * 60 * 1000;
 
 // Parse the parameter and call isodist
 function run(options) {
