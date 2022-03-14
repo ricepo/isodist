@@ -28,7 +28,7 @@
   },
   "scripts": {
     "install": "./script/setup.sh",
-    "start": "node --max_old_space_size=4096 server"
+    "start": "NODE_OPTIONS=--max_old_space_size=7500 node server"
   },
   "devDependencies": {
     "ava": "^0.15.2",
