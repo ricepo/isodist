@@ -24,6 +24,7 @@ function trace(pgrid, d, opts) {
   );
 
 
+  const time1 = new Date().getTime();
   /**
    * Compute concave hull
    */
@@ -84,8 +85,9 @@ function trace(pgrid, d, opts) {
     .assign({ properties: hull.properties })
     .value();
 
+  const time2 = new Date().getTime();
 
-  console.log(`Processing d=${d}`);
+  console.log(`Processing d=${d}, ${(time2 - time1) / 1000}`);
   return polygon;
 }
 module.exports = trace;

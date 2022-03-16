@@ -21,9 +21,12 @@ app.use(BodyParser.json());
 // app.use(BodyParser.urlencoded({ extended: true }));
 
 app.post('/', (req, res) => {
+  const time1 = new Date().getTime();
   run(req.body)
     .then((data) => {
       res.json(_.get(data, 'features[0].geometry'));
+      const time2 = new Date().getTime();
+      console.log('task done====>', (time2 - time1) / 1000, JSON.stringify(req.body));
     })
     .catch((err) => {
       console.log(err);
@@ -36,8 +39,8 @@ app.listen(process.env.PORT || 3456, () => {
 });
 
 /* Must greater than the idle timeout of AWS ELB to prevent 502 bad gateway */
-app.keepAliveTimeout = 6 * 60 * 1000;
-app.headersTimeout = 7 * 60 * 1000;
+app.keepAliveTimeout = 10 * 60 * 1000;
+app.headersTimeout = 11 * 60 * 1000;
 
 // Parse the parameter and call isodist
 function run(options) {
