@@ -50,10 +50,12 @@ function run(options) {
 
   /**
    * The resolution and hexSize should >= [0.03, 0.15]
+   * give larger resolution and hexSize will speed up the calculation
+   * but will reduce the precision
    */
   _.defaults(options, {
-    resolution: 0.04,
-    hexSize: 0.2
+    resolution: 0.06,
+    hexSize: 0.3
   });
 
 
