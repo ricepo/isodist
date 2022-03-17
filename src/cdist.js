@@ -49,45 +49,41 @@ async function cdist(mapName, origin, pgrid, options) {
    */
   async function _newSingle(features) {
 
-    try {
-      const coordinates = _.map(features, (feature) => [
-        feature.geometry.coordinates[1],
-        feature.geometry.coordinates[0] ]);
+    const coordinates = _.map(features, (feature) => [
+      feature.geometry.coordinates[1],
+      feature.geometry.coordinates[0] ]);
 
-      if (_.isEmpty(coordinates)) { return; }
+    if (_.isEmpty(coordinates)) { return; }
 
-      coordinates.push([ origin.coordinates[1], origin.coordinates[0] ]);
+    coordinates.push([ origin.coordinates[1], origin.coordinates[0] ]);
 
-      const sources = `${coordinates.length - 1}`;
-      const pl = polyline.encode(coordinates);
+    const sources = `${coordinates.length - 1}`;
+    const pl = polyline.encode(coordinates);
 
       /* construct request parameters */
-      const params = querystring.stringify({
-        sources,
-        annotations:    'duration,distance',
-        fallback_speed: 1.0 // fix null duation of OSRM
-      }, '&', '=');
+    const params = querystring.stringify({
+      sources,
+      annotations:    'duration,distance',
+      fallback_speed: 1.0 // fix null duation of OSRM
+    }, '&', '=');
 
-      const host = process.env.OSRM_HOST;
-      const url = `/table/v1/driving/polyline(${encodeURIComponent(pl)})?${params}`;
+    const host = process.env.OSRM_HOST;
+    const url = `/table/v1/driving/polyline(${encodeURIComponent(pl)})?${params}`;
 
-      const option = {
-        uri: `${host}${url}`,
-        headers: { map },
-        json: true // Automatically parses the JSON string in the response
-      };
+    const option = {
+      uri: `${host}${url}`,
+      headers: { map },
+      json: true // Automatically parses the JSON string in the response
+    };
 
-      const result =  await rp(option);
-      const distances = _.get(result, 'distances');
-      if (_.isEmpty(distances)) { return; }
+    const result =  await rp(option);
+    const distances = _.get(result, 'distances');
+    if (_.isEmpty(distances)) { return; }
 
-      _.forEach(features, (feature, index) => {
-        feature.properties.distance = (_.get(distances, `0.${index}`) / 1600) || Number.MAX_VALUE;
-      });
+    _.forEach(features, (feature, index) => {
+      feature.properties.distance = (_.get(distances, `0.${index}`) / 1600) || Number.MAX_VALUE;
+    });
 
-    } catch (error) {
-      console.log('error====>', error);
-    }
   }
 
 
